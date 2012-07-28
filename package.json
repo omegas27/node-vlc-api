@@ -1,0 +1,19 @@
+{
+  "author": "Joshua Holbrook <josh.holbrook@gmail.com> (http://jesusabdullah.net)",
+  "name": "vlc-api",
+  "description": "HTTP API client for vlc v2.0.1 Twoflower",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jesusabdullah/node-vlc-api",
+  "repository": {
+    "url": "git@github.com:jesusabdullah/node-vlc-api.git"
+  },
+  "main": "./index.js",
+  "dependencies": {
+    "request": "~2.9.203"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
