@@ -99,7 +99,7 @@ var Client = module.exports = function (opts) {
   ;
   // UNSUPPORTED, but easy enough to add. Will see how it goes.
   this.status.delete = function (id, opts, cb) {
-    else if (typeof opts == 'function') {
+    if (typeof opts == 'function') {
       cb = opts;
       opts = {};
     }
@@ -117,14 +117,14 @@ var Client = module.exports = function (opts) {
       command: 'audiodelay',
       val: seconds
     }, cb);
-  });
+  };
   // Set subtitle delay (sure, why not?)
   this.status.subtitleDelay = function (seconds, cb) {
     client.status({
       command: 'subdelay',
       val: seconds
     }, cb);
-  });
+  };
   // Set aspect ratio (sure, why not?)
   this.status.aspectRatio = function (ratio, cb) {
     // Support a few ways of specifying the ratio.
@@ -142,7 +142,7 @@ var Client = module.exports = function (opts) {
       command: 'aspectratio',
       val: ratio
     }, cb);
-  });
+  };
   // Sort the playlist.
   this.status.sort = function (mode, order, cb) {
     var err;
@@ -230,7 +230,7 @@ var Client = module.exports = function (opts) {
   };
   // Set gain on preamp (dB)
   this.status.preamp = function (k, cb) {
-    return client.status){
+    return client.status({
       command: 'volume',
       val: k
     }, cb);
@@ -312,7 +312,7 @@ var Client = module.exports = function (opts) {
 
 // Resolve a resource to the uri we need.
 Client.prototype._resolve = function (resource) {
-  return url.resolve(this._base, util.format('/resources/%s.json', resource));
+  return url.resolve(this._base, util.format('/requests/%s.json', resource));
 }
 
 // Base vlc api request client api.

@@ -11,9 +11,7 @@
   "dependencies": {
     "request": "~2.9.203"
   },
-  "devDependencies": {},
-  "optionalDependencies": {},
-  "engines": {
-    "node": "*"
+  "scripts": {
+    "test": "node ./test/thisistheremix.js"
   }
 }
