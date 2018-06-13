@@ -315,6 +315,19 @@ Client.prototype._resolve = function (resource) {
   return url.resolve(this._base, util.format('/requests/%s.json', resource));
 }
 
+function handleError(err, json, cb) {
+  if (typeof json == 'function') {
+    cb = json;
+    json = null;
+  }
+   // Optional cb. Sometimes you want to fire and forget.
+  if (cb) {
+    cb(err, json);
+  } else {
+    throw err;
+  }
+}
+
 // Base vlc api request client api.
 Client.prototype.request = function (resource, opts, cb) {
   var client = this;
@@ -335,7 +348,13 @@ Client.prototype.request = function (resource, opts, cb) {
     uri: client._resolve(resource),
     qs: opts || {}
   }, function (err, res, body) {
-    var json;
+    if (err) {
+      return handleError(err, null, cb)
+    }
+
+    if (!res || !res.statusCode || !body) {
+      return handleError(new Error("Missing VLC server"), null, cb);
+    }
 
     // Documentation does not say which status codes to expect.
     // I'm filtering out 300-500 range codes here
@@ -348,31 +367,18 @@ Client.prototype.request = function (resource, opts, cb) {
       case 4:
       case 5:
       default:
-        if (!err) {
-          err = new Error(
-            util.format('HTTP status %d', res.statusCode)
-          );
-        }
+      return handleError(new Error(util.format('HTTP status %d', res.statusCode)), null, cb);
         break;
     }
-
-    // Body should be JSON-parse-able.
+      
     try {
-      json = JSON.parse(body.toString());
-    }
-    catch (err) {
-      json = body.toString();
-    }
-    finally {
-      // Optional cb. Sometimes you want to fire and forget.
       if (cb) {
-        cb(err, json);
+        // Body should be JSON-parse-able.
+        cb(null, JSON.parse(body.toString()))
       }
-      else {
-        if (err) {
-          throw err;
-        }
-      }
+      return;
+    } catch (e) {
+      handleError(null, body.toString(), cb);
     }
   });
 }
