@@ -108,9 +108,11 @@ var Client = module.exports = function (opts) {
     return client.status(opts, cb);
   };
   // Scrap the whole playlist, start over.
-  this.status.empty
-    = this.request.bind(this, 'status', {command: 'pl_empty'})
-  ;
+  this.status.empty = function (cb) {
+    return client.status({
+      command: 'pl_empty',
+    }, cb);
+  };
   // Set audio delay (sure, why not?)
   this.status.audioDelay = function (seconds, cb) {
     client.status({
@@ -196,15 +198,21 @@ var Client = module.exports = function (opts) {
     = this.request.bind(this, 'status', {command: 'pl_random'})
   ;
   // Toggle loop
-  this.status.loop
-    = this.request.bind(this, 'status', {command: 'pl_loop'})
-  ;
+  this.status.loop = function(cb) {
+    return client.status({
+      command: 'pl_loop',
+    }, cb);
+  };
+    
   // Toggle repeat
-  this.status.repeat
-    = this.request.bind(this, 'status', {command: 'pl_repeat'})
-  ;
+  this.status.repeat = function(cb) {
+    return client.status({
+      command: 'pl_repeat',
+    }, cb);
+  };
+    
   // Turn on service discovery modules.
-  this.status.discovery = function (val, cb) {
+  this.status.discovery = function (cb) {
     return client.status({
       command: 'pl_sd',
       val: val
